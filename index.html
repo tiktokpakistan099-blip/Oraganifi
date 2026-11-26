@@ -88,6 +88,15 @@ select{width:100%;padding:15px;border:1px solid #ead4dc;border-radius:10px;backg
 </style><style id="product-description-style">
 .product-details{background:linear-gradient(155deg,#fff5f8,#f5d2df);padding:48px 5%;color:#54152f}.pd-wrap{max-width:980px;margin:auto}.pd-heading{text-align:center;margin:0 auto 26px;max-width:650px}.pd-heading h2{font-size:clamp(25px,4vw,36px);margin:8px 0 12px;line-height:1.2}.pd-heading p,.pd-copy p{color:#654550;line-height:1.65;font-size:15px;margin:8px 0}.pd-grid{display:grid;gap:18px}.pd-card{display:grid;grid-template-columns:1fr 1fr;align-items:center;overflow:hidden;background:#fff;border:1px solid #e8b5c8;border-radius:18px;box-shadow:0 5px 18px #7223420b}.pd-card:nth-child(even) .pd-photo{order:2}.pd-photo{display:block;width:100%;height:auto;aspect-ratio:1;object-fit:contain;background:#f8dce6}.pd-copy{padding:24px}.pd-copy small{font-weight:800;letter-spacing:1.5px;color:#a52c5b}.pd-copy h3{font-size:23px;margin:8px 0;line-height:1.25}.pd-note{font-size:12px;color:#765762;text-align:center;margin:20px auto 0;line-height:1.5}.pd-card img{max-width:100%}@media(max-width:650px){.product-details{padding:36px 5%}.pd-card{grid-template-columns:1fr}.pd-card:nth-child(even) .pd-photo{order:0}.pd-copy{padding:20px}.pd-copy h3{font-size:21px}}
 </style>
+
+<!-- Google Ads tracking -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-18596185755"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'AW-18596185755');
+</script>
 </head>
 <body>
 <div id="site">
@@ -179,6 +188,18 @@ document.getElementById('orderForm').addEventListener('submit', async function(e
   }
   await new Promise(resolve => setTimeout(resolve, Math.max(0, 2000 - (Date.now() - started))));
   // Add your own pixel conversion event here after verified submission.
+
+  // Google Ads Purchase: only after confirmed order submission.
+  if (GOOGLE_SCRIPT_URL) {
+   try {
+    gtag('event', 'conversion', {
+     send_to: 'AW-18596185755/XjQQCMO9zb8dEJuNraNF',
+     value: order.totalAmount,
+     currency: 'PKR',
+     transaction_id: order.orderId
+    });
+   } catch (trackingError) { console.warn('Google Ads tracking unavailable', trackingError); }
+  }
   form.dataset.orderSubmitted = 'true';
   form.dataset.orderSubmitting = 'false';
 
